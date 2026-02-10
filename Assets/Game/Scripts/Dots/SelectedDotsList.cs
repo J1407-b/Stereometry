@@ -36,55 +36,26 @@ public class SphereCollector : MonoBehaviour
                         selectedSphereObjects.Add(sphereObject);
                         Debug.Log("Сфера добавлена: " + sphereObject.name);
                     }
-                    else if (selectedSphereObjects.Count >= 2)
-                    {
-                        Debug.Log("Уже выбрано максимальное количество сфер (2).");
-                        // Можно добавить логику замены, если нужно:
-                        // Например, заменить первую сферу: selectedSphereObjects[0] = sphereObject;
-                    }
                 }
             }
         }
 
-        // Очищаем уничтоженные сферы из списка
-        CleanDestroyedSpheres();
+        if (selectedSphereObjects.Count == 2)
+            UpdateLineRenderer();
 
-        // Обновляем линию
-        UpdateLineRenderer();
-    }
-
-    private void CleanDestroyedSpheres()
-    {
-        // Создаем временный список для сфер, которые нужно удалить
-        List<GameObject> spheresToRemove = new List<GameObject>();
-
-        // Проверяем все сферы в списке
-        for (int i = 0; i < selectedSphereObjects.Count; i++)
+        // Очищаем линию, если выбрано меньше 2 сфер
+        if (selectedSphereObjects.Count < 2 && Input.GetMouseButtonDown(1))
         {
-            if (selectedSphereObjects[i] == null)
-            {
-                // Если сфера уничтожена (null), добавляем в список на удаление
-                spheresToRemove.Add(selectedSphereObjects[i]);
-                Debug.Log("Обнаружена уничтоженная сфера, удаляю из списка...");
-            }
-        }
-
-        // Удаляем все отмеченные сферы
-        foreach (GameObject sphere in spheresToRemove)
-        {
-            selectedSphereObjects.Remove(sphere);
+            Destroy(lineRenderer.gameObject);
+            return;
         }
     }
+
+
 
     private void UpdateLineRenderer()
     {
-        // Очищаем линию, если выбрано меньше 2 сфер
-        if (selectedSphereObjects.Count < 2)
-        {
-            lineRenderer.positionCount = 0;
-            return;
-        }
-
+        
         // Проверяем, что обе сферы существуют
         if (selectedSphereObjects[0] == null || selectedSphereObjects[1] == null)
         {
@@ -100,16 +71,5 @@ public class SphereCollector : MonoBehaviour
         lineRenderer.SetPosition(1, selectedSphereObjects[1].transform.position);
     }
 
-    // Метод для получения выбранных сфер (опционально)
-    public List<GameObject> GetSelectedSpheres()
-    {
-        return new List<GameObject>(selectedSphereObjects);
-    }
 
-    // Метод для очистки всех выбранных сфер (опционально)
-    public void ClearSelection()
-    {
-        selectedSphereObjects.Clear();
-        lineRenderer.positionCount = 0;
-    }
 }
