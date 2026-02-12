@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SphereCollector : MonoBehaviour
+public class SelectedDotsList : MonoBehaviour
 {
     // ’раним ссылки на сами GameObject сфер (максимум 2)
     private List<GameObject> selectedSphereObjects = new List<GameObject>();
@@ -24,7 +24,7 @@ public class SphereCollector : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
-                SelectableSphere sphereScript = hit.collider.GetComponent<SelectableSphere>();
+                DotFlag sphereScript = hit.collider.GetComponent<DotFlag>();
 
                 if (sphereScript != null)
                 {
@@ -34,7 +34,6 @@ public class SphereCollector : MonoBehaviour
                     if (!selectedSphereObjects.Contains(sphereObject) && selectedSphereObjects.Count < 2)
                     {
                         selectedSphereObjects.Add(sphereObject);
-                        Debug.Log("—фера добавлена: " + sphereObject.name);
                     }
                 }
             }

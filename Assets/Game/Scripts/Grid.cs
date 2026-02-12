@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LineRendererGridComponent : MonoBehaviour
+public class Grid : MonoBehaviour
 {
     public int Height;
     public int Width;
